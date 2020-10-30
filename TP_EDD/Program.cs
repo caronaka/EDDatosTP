@@ -63,6 +63,14 @@ namespace TP_EDD
         {
             Console.WriteLine("Ingrese el Id: ");
             int id = Convert.ToInt32(Console.ReadLine());
+            foreach (Product producto in lista) //recorre la lista y cuando coincide el id del producto a modificar, reemplaza el cantidad
+            {
+                if (producto.Id == id) //valida que ese id no exista
+                {
+                    Console.WriteLine("Ese id ya existe, escriba uno nuevo.");
+                    id = Convert.ToInt32(Console.ReadLine());
+                }
+            }
 
             Console.WriteLine("Ingrese el nombre: ");
             string nombre = Console.ReadLine();
