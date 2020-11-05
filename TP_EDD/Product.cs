@@ -10,9 +10,9 @@ namespace TP_EDD
 {
     public class Product
     {   
-        //negocio de cafes (ejemplo)
-        //clase productos
-        //atributos id, nombre del producto, precio y cantidad
+        //Negocio de cafes en granos (ejemplo)
+        //Clase productos
+        //Atributos id, nombre del producto, precio y cantidad
 
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace TP_EDD
 
 
 
-        public Product(int id, string name, decimal price, int quantity) //constructor
+        public Product(int id, string name, decimal price, int quantity) //Constructor
         {
             Id = id;
             Name = name;
