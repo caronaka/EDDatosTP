@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace TP_EDD
 {
@@ -102,7 +103,7 @@ namespace TP_EDD
         public static void MenuAdmin(List<Product> lista)
         {
             string opc = "0";
-            while (opc != "5") //Creamos un ciclo para que se repita el menu hasta que el usuario quiera salir
+            while (opc != "6") //Creamos un ciclo para que se repita el menu hasta que el usuario quiera salir
             {
                 Console.Clear();
                 Console.WriteLine("\nMENU PRINCIPAL\n");
@@ -110,7 +111,8 @@ namespace TP_EDD
                 Console.WriteLine("2) Modificar precio o cantidad de un producto");
                 Console.WriteLine("3) Eliminar producto");
                 Console.WriteLine("4) Consultar stock");
-                Console.WriteLine("5) Salir");
+                Console.WriteLine("5) Imprimir stock");
+                Console.WriteLine("6) Salir");
                 Console.Write("\r\nElija una opcion: ");
                 opc = Console.ReadLine();
 
@@ -129,6 +131,9 @@ namespace TP_EDD
                         Read(lista);
                         break;
                     case "5":
+                        Imprimir(lista);
+                        break;
+                    case "6":
                         Console.WriteLine("\nNos vemos!");
                         return;
                 }
@@ -221,6 +226,8 @@ namespace TP_EDD
                 Console.WriteLine("Precio : {0}", producto.Price) ;
                 Console.WriteLine("Cantidad : {0}", producto.Quantity);
             }
+
+            
         }
 
         //Funcion para modificar cantidad o precio del producto.
@@ -320,6 +327,7 @@ namespace TP_EDD
                         lista.Remove(producto);
                     }
                 }
+                Console.WriteLine("\nSe elimino correctamente.");
 
             }
 
@@ -328,8 +336,39 @@ namespace TP_EDD
                 return lista;
             }
 
-            Console.WriteLine("\nSe elimino correctamente.");
+            
             return lista;
+        }
+
+        public static void Imprimir(List<Product> lista)
+        {
+            try
+            {
+                string fileName = "Impresion.txt";
+                StreamWriter writer = File.CreateText(fileName);
+
+                DateTime today = DateTime.Today;
+                writer.WriteLine("Stock de COFFESHOP al dia {0}.", today);
+
+
+
+                foreach (Product producto in lista.ToList())
+                {
+
+                    writer.WriteLine("\nId : {0}, Nombre : {1}, Precio : {2}, Cantidad : {3}", producto.Id, producto.Name, producto.Price, producto.Quantity);
+
+                }
+
+                writer.Close();
+
+                Console.WriteLine("El archivo esta listo para imprimir en la ruta Desktop/IFTS/REPO_EDDTP/EDDatosTP/bin/Debug.");
+            }
+
+            catch
+            {
+                Console.WriteLine("Error con el archivo.");
+            }
+
         }
 
      

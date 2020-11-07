@@ -1,0 +1,13 @@
+Stock de COFFESHOP al dia 11/7/2020 12:00:00 AM.
+
+Id : 1, Nombre : Brasil, Precio : 320, Cantidad : 389
+
+Id : 2, Nombre : Colombia, Precio : 270, Cantidad : 400
+
+Id : 3, Nombre : Nicaragua, Precio : 183, Cantidad : 350
+
+Id : 4, Nombre : Italiano, Precio : 100, Cantidad : 450
+
+Id : 5, Nombre : Etiopia, Precio : 85, Cantidad : 415
+
+Id : 8, Nombre : Holanda, Precio : 123, Cantidad : 123
