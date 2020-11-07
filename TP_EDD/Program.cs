@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace TP_EDD
             Users admin = new Users("Admin1", "123456");
             Users empleado = new Users("Empleado1", "123456");
 
-            Console.WriteLine("Control de stock de TIENDA DE CAFES\n");
+            Console.WriteLine("Control de stock de COFFE SHOP\n");
 
             Console.WriteLine("LOG IN\n");
 
@@ -68,7 +69,7 @@ namespace TP_EDD
                 Console.WriteLine("\nBienvenido! Presione cualquier tecla.");
                 Console.ReadKey();
 
-                MenuAdmin(cafes);
+                MenuAdmin(cafes); //Menu que tiene todas las funciones
             }
 
             //Si es el empleado, llama a la funcion menuempleado que solo permite consultar el stock.
@@ -87,12 +88,12 @@ namespace TP_EDD
                 Console.WriteLine("\nBienvenido! Presione cualquier tecla.");
                 Console.ReadKey();
 
-                MenuEmpleado(cafes);
+                MenuEmpleado(cafes); //Ejecuta el menu del empleado
             }
 
             //Mensaje al salir del programa
 
-            Console.WriteLine("\nNos vemos!");
+           
             Console.ReadKey();
 
         }
@@ -128,6 +129,7 @@ namespace TP_EDD
                         Read(lista);
                         break;
                     case "5":
+                        Console.WriteLine("\nNos vemos!");
                         return;
                 }
                 Console.WriteLine("\nPresione cualquier tecla para continuar.");
@@ -154,6 +156,7 @@ namespace TP_EDD
                         Read(lista);
                         break;
                     case "2":
+                        Console.WriteLine("\nNos vemos!");
                         return; //Sale de la funcion
                 }
                 Console.WriteLine("\nPresione cualquier tecla para continuar.");
@@ -165,29 +168,45 @@ namespace TP_EDD
         public static List<Product> Create(List<Product> lista) 
         {
             Console.WriteLine("Ingrese el Id: ");
-            int id = Convert.ToInt32(Console.ReadLine());
-            foreach (Product producto in lista) 
+            
+            try
             {
-                while (producto.Id == id) //Valida que el id nuevo no exista en la lista
+                int id;
+                id = Convert.ToInt32(Console.ReadLine());
+                foreach (Product producto in lista)
                 {
-                    Console.WriteLine("Ese id ya existe, escriba uno nuevo.");
-                    id = Convert.ToInt32(Console.ReadLine());
+                    while (producto.Id == id) //Valida que el id nuevo no exista en la lista
+                    {
+                        Console.WriteLine("Ese id ya existe, escriba uno nuevo.");
+                        id = Convert.ToInt32(Console.ReadLine());
+                    }
                 }
+
+
+                Console.WriteLine("Ingrese el nombre: ");
+                string nombre = Console.ReadLine();
+
+                Console.WriteLine("Ingrese precio: ");
+                decimal precio = Convert.ToDecimal(Console.ReadLine());
+
+                Console.WriteLine("Ingrese cantidad: ");
+                int cantidad = Convert.ToInt32(Console.ReadLine());
+
+
+                Product nuevo = new Product(id, nombre, precio, cantidad); //Instanciamos el nuevo producto 
+                lista.Add(nuevo); //Lo agregamos a la lista
+
+                Console.WriteLine("\nSe guardo correctamente.");
+            }
+           
+                
+            catch (FormatException)
+            {
+                Console.WriteLine("Debe ingresar un numero.");
+                Create(lista);
             }
 
-            Console.WriteLine("Ingrese el nombre: ");
-            string nombre = Console.ReadLine();
 
-            Console.WriteLine("Ingrese precio: ");
-            decimal precio = Convert.ToDecimal(Console.ReadLine());
-
-            Console.WriteLine("Ingrese cantidad: ");
-            int cantidad = Convert.ToInt32(Console.ReadLine());
-
-            Product nuevo = new Product(id, nombre, precio, cantidad); //Instanciamos el nuevo producto 
-            lista.Add(nuevo); //Lo agregamos a la lista
-
-            Console.WriteLine("\nSe guardo correctamente.");
 
             return lista; //Devuelve la lista con el producto agregado
         }
@@ -207,41 +226,62 @@ namespace TP_EDD
         //Funcion para modificar cantidad o precio del producto.
         public static List<Product> Update(List<Product> lista) 
         {
-            Console.WriteLine("Que desea modificar?  \n 1. Precio \n 2. Cantidad \n Ingrese 1 o 2: "); //Ingrese si quiere cambiar precio o cantidad
-            int categoria = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Ingrese el id del producto a modificar: "); //Ingrese id del producto a modificar
-            int id_modificar = Convert.ToInt32(Console.ReadLine());
-
-            if (categoria == 1) //Precio
+            try
             {
-                Console.WriteLine("Ingrese el nuevo precio: ");
-                decimal nuevo_precio = Convert.ToDecimal(Console.ReadLine()); //Ingresa nuevo precio
+                Console.WriteLine("Que desea modificar?  \n 1. Precio \n 2. Cantidad \n Ingrese 1 o 2: "); //Ingrese si quiere cambiar precio o cantidad
+                int categoria = Convert.ToInt32(Console.ReadLine());
 
-                foreach (Product producto in lista) //Recorre la lista y cuando coincide el id del producto a modificar, reemplaza el precio
+                Console.WriteLine("Ingrese el id del producto a modificar: "); //Ingrese id del producto a modificar
+                int id_modificar = Convert.ToInt32(Console.ReadLine());
+
+
+                while ((lista.Exists(producto => producto.Id == id_modificar)) == false)
                 {
-                    if (producto.Id == id_modificar) 
+                    Console.WriteLine("\nERROR. El producto con el id {0} no existe.", id_modificar);
+                    Console.WriteLine("Ingrese el id del producto a eliminar: ");
+                    id_modificar = Convert.ToInt32(Console.ReadLine());
+                }
+
+
+                if (categoria == 1) //Precio
+                {
+                    Console.WriteLine("Ingrese el nuevo precio: ");
+
+                    decimal nuevo_precio = Convert.ToDecimal(Console.ReadLine()); //Ingresa nuevo precio
+
+                    foreach (Product producto in lista) //Recorre la lista y cuando coincide el id del producto a modificar, reemplaza el precio
                     {
-                        producto.Price = nuevo_precio ;
+                        if (producto.Id == id_modificar)
+                        {
+                            producto.Price = nuevo_precio;
+                        }
                     }
                 }
-            }
 
-            if (categoria == 2) //Cantidad
-            {
-                Console.WriteLine("Ingrese la nueva cantidad: ");
-                int nueva_cantidad = Convert.ToInt32(Console.ReadLine()); //Ingresa nueva cantidad
-
-                foreach (Product producto in lista) //Recorre la lista y cuando coincide el id del producto a modificar, reemplaza el cantidad
+                if (categoria == 2) //Cantidad
                 {
-                    if (producto.Id == id_modificar)
+                    Console.WriteLine("Ingrese la nueva cantidad: ");
+                    int nueva_cantidad = Convert.ToInt32(Console.ReadLine()); //Ingresa nueva cantidad
+
+                    foreach (Product producto in lista) //Recorre la lista y cuando coincide el id del producto a modificar, reemplaza el cantidad
                     {
-                        producto.Quantity = nueva_cantidad;
+                        if (producto.Id == id_modificar)
+                        {
+                            producto.Quantity = nueva_cantidad;
+                        }
                     }
                 }
+                Console.WriteLine("\nSe guardaron los cambios.");
+                
             }
-            Console.WriteLine("\nSe guardaron los cambios.");
+
+            catch (FormatException)
+            {
+                Console.WriteLine("Debe ingresar un numero.");
+                Update(lista);
+            }
             return lista;
+
         }
 
         //Funcion para eliminar productos de la lista
@@ -249,20 +289,50 @@ namespace TP_EDD
         {
 
             Console.WriteLine("Ingrese el id del producto a eliminar: "); //Ingresa id del producto a eliminar
-            int id_eliminar = Convert.ToInt32(Console.ReadLine());
-
-            foreach (Product producto in lista.ToList())//Recorre la lista y cuando coincide el id del producto a eliminar, se elimina
+            
+;           int id_eliminar = 0;
+            id_eliminar = Convert.ToInt32(Console.ReadLine());
+            
+            while ((lista.Exists(producto => producto.Id == id_eliminar)) == false)
             {
-                if (producto.Id == id_eliminar) 
+                Console.WriteLine("\nERROR. El producto con el id {0} no existe.", id_eliminar);
+                Console.WriteLine("Ingrese el id del producto a eliminar: ");
+                id_eliminar = Convert.ToInt32(Console.ReadLine());
+            }           
+        
+
+            foreach (Product producto in lista.ToList())//Recorre la lista y cuando coincide el id del producto a eliminar, te tira los datos
+            {
+                if (producto.Id == id_eliminar)
                 {
-                    lista.Remove(producto);
+                    Console.WriteLine("\nUsted esta por eliminar {0}. Desea continuar? si/no", producto.Name);
                 }
             }
+
+            string continuar = Console.ReadLine().ToLower();
+
+            if (continuar == "si")
+            {
+                foreach (Product producto in lista.ToList())//Recorre la lista y cuando coincide el id del producto a eliminar, se elimina
+                {
+                    if (producto.Id == id_eliminar)
+                    {
+                        lista.Remove(producto);
+                    }
+                }
+
+            }
+
+            if(continuar == "no")
+            {
+                return lista;
+            }
+
             Console.WriteLine("\nSe elimino correctamente.");
             return lista;
         }
 
-
+     
 
 
 
