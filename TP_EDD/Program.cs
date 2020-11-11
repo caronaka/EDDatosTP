@@ -173,7 +173,7 @@ namespace TP_EDD
         public static List<Product> Create(List<Product> lista) 
         {
             Console.WriteLine("Ingrese el Id: ");
-            
+
             try
             {
                 int id;
@@ -187,32 +187,57 @@ namespace TP_EDD
                     }
                 }
 
-
                 Console.WriteLine("Ingrese el nombre: ");
-                string nombre = Console.ReadLine();
+
+                string nombre = (Console.ReadLine());
+                foreach (Product product in lista)
+                {
+                    while (product.Name == nombre)//Valida que el nombre no se repita
+                    {
+                        Console.WriteLine("Ese producto ya existe, ingrese otro nombre: ");
+                        nombre = Convert.ToString(Console.ReadLine());
+                        
+                    while(string.IsNullOrEmpty(nombre))//Valida que no este vacio
+                    {
+                            Console.WriteLine("No puede estar vacio.");
+                            Console.WriteLine("Ingrese un nombre correcto por favor: ");
+                            nombre = Convert.ToString(Console.ReadLine());
+                        }
+                    }
+                }
 
                 Console.WriteLine("Ingrese precio: ");
-                decimal precio = Convert.ToDecimal(Console.ReadLine());
+                var StringAPrecio = Console.ReadLine();
+                decimal precio;
+                while (!decimal.TryParse(StringAPrecio, out precio)) //Comprueba que sea solo numeros
+                {
+                    Console.WriteLine("Se aceptan solo numeros.");
+                    Console.WriteLine("Ingrese el precio correcto.");
+                    StringAPrecio = Console.ReadLine();
+                }
+               
 
                 Console.WriteLine("Ingrese cantidad: ");
-                int cantidad = Convert.ToInt32(Console.ReadLine());
-
+                var StringACantidad = Convert.ToInt32(Console.ReadLine());
+                int cantidad;
+                while (!int.TryParse(StringAPrecio, out cantidad)) //Comprueba que sea solo numeros
+                {
+                    Console.WriteLine("Se aceptan solo numeros.");
+                    Console.WriteLine("Ingrese la cantidad nuevamente.");
+                    StringAPrecio = Console.ReadLine();
+                }
 
                 Product nuevo = new Product(id, nombre, precio, cantidad); //Instanciamos el nuevo producto 
                 lista.Add(nuevo); //Lo agregamos a la lista
 
                 Console.WriteLine("\nSe guardo correctamente.");
+
             }
-           
-                
             catch (FormatException)
             {
                 Console.WriteLine("Debe ingresar un numero.");
                 Create(lista);
             }
-
-
-
             return lista; //Devuelve la lista con el producto agregado
         }
 
