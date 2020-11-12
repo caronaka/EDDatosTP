@@ -50,7 +50,7 @@ namespace TP_EDD
             
             while (usuario_input != admin.Usuario && usuario_input != empleado.Usuario)
             {
-                Console.WriteLine("Usuario incorrecto. Ingrese usuario: ");
+                Console.WriteLine("Usuario inexistente. Ingrese usuario: ");
                 usuario_input = Console.ReadLine();
             }
 
@@ -146,12 +146,13 @@ namespace TP_EDD
         public static void MenuEmpleado(List<Product> lista)
         {
             string opc = "0";
-            while (opc != "5") //Creamos un ciclo para que se repita el menu hasta que el usuario quiera salir
+            while (opc != "3") //Creamos un ciclo para que se repita el menu hasta que el usuario quiera salir
             {
                 Console.Clear();
                 Console.WriteLine("MENU PRINCIPAL");
                 Console.WriteLine("1) Consultar stock");
-                Console.WriteLine("2) Salir");
+                Console.WriteLine("2) Imprimir stock");
+                Console.WriteLine("3) Salir");
                 Console.Write("\r\nElija una opcion: ");
                 opc = Console.ReadLine();
 
@@ -161,6 +162,9 @@ namespace TP_EDD
                         Read(lista);
                         break;
                     case "2":
+                        Imprimir(lista);
+                        break;
+                    case "3":
                         Console.WriteLine("\nNos vemos!");
                         return; //Sale de la funcion
                 }
@@ -173,71 +177,79 @@ namespace TP_EDD
         public static List<Product> Create(List<Product> lista) 
         {
             Console.WriteLine("Ingrese el Id: ");
-
-            try
-            {
-                int id;
-                id = Convert.ToInt32(Console.ReadLine());
-                foreach (Product producto in lista)
-                {
-                    while (producto.Id == id) //Valida que el id nuevo no exista en la lista
-                    {
-                        Console.WriteLine("Ese id ya existe, escriba uno nuevo.");
-                        id = Convert.ToInt32(Console.ReadLine());
-                    }
-                }
-
-                Console.WriteLine("Ingrese el nombre: ");
-
-                string nombre = (Console.ReadLine());
-                foreach (Product product in lista)
-                {
-                    while (product.Name == nombre)//Valida que el nombre no se repita
-                    {
-                        Console.WriteLine("Ese producto ya existe, ingrese otro nombre: ");
-                        nombre = Convert.ToString(Console.ReadLine());
                         
-                    while(string.IsNullOrEmpty(nombre))//Valida que no este vacio
+            var string_id = Console.ReadLine();
+            int id;
+            while (!int.TryParse(string_id, out id))
+            {
+                Console.WriteLine("Se aceptan solo numeros.");
+                Console.WriteLine("Ingrese un id correcto.");
+                string_id = Console.ReadLine();
+            }
+            foreach (Product producto in lista)
+            {
+                while (producto.Id == id) //Valida que el id nuevo no exista en la lista
+                {
+                    Console.WriteLine("Ese id ya existe, escriba uno nuevo.");
+                    string_id = Console.ReadLine();
+                    
+                    while (!int.TryParse(string_id, out id))
                     {
-                            Console.WriteLine("No puede estar vacio.");
-                            Console.WriteLine("Ingrese un nombre correcto por favor: ");
-                            nombre = Convert.ToString(Console.ReadLine());
-                        }
+                        Console.WriteLine("Se aceptan solo numeros.");
+                        Console.WriteLine("Ingrese un id correcto.");
+                        string_id = Console.ReadLine();
                     }
                 }
+            }
 
-                Console.WriteLine("Ingrese precio: ");
-                var StringAPrecio = Console.ReadLine();
-                decimal precio;
-                while (!decimal.TryParse(StringAPrecio, out precio)) //Comprueba que sea solo numeros
+
+
+            Console.WriteLine("Ingrese el nombre: ");
+
+            string nombre = (Console.ReadLine());
+            foreach (Product product in lista)
+            {
+                while (product.Name == nombre)//Valida que el nombre no se repita
                 {
-                    Console.WriteLine("Se aceptan solo numeros.");
-                    Console.WriteLine("Ingrese el precio correcto.");
-                    StringAPrecio = Console.ReadLine();
+                    Console.WriteLine("Ese producto ya existe, ingrese otro nombre: ");
+                    nombre = Convert.ToString(Console.ReadLine());
+                        
+                while(string.IsNullOrEmpty(nombre))//Valida que no este vacio
+                {
+                        Console.WriteLine("No puede estar vacio.");
+                        Console.WriteLine("Ingrese un nombre correcto por favor: ");
+                        nombre = Convert.ToString(Console.ReadLine());
+                    }
                 }
+            }
+
+            Console.WriteLine("Ingrese precio: ");
+            var StringAPrecio = Console.ReadLine();
+            decimal precio;
+            while (!decimal.TryParse(StringAPrecio, out precio)) //Comprueba que sea solo numeros
+            {
+                Console.WriteLine("Se aceptan solo numeros.");
+                Console.WriteLine("Ingrese el precio correcto: ");
+                StringAPrecio = Console.ReadLine();
+            }
                
 
-                Console.WriteLine("Ingrese cantidad: ");
-                var StringACantidad = Convert.ToInt32(Console.ReadLine());
-                int cantidad;
-                while (!int.TryParse(StringAPrecio, out cantidad)) //Comprueba que sea solo numeros
-                {
-                    Console.WriteLine("Se aceptan solo numeros.");
-                    Console.WriteLine("Ingrese la cantidad nuevamente.");
-                    StringAPrecio = Console.ReadLine();
-                }
-
-                Product nuevo = new Product(id, nombre, precio, cantidad); //Instanciamos el nuevo producto 
-                lista.Add(nuevo); //Lo agregamos a la lista
-
-                Console.WriteLine("\nSe guardo correctamente.");
-
-            }
-            catch (FormatException)
+            Console.WriteLine("Ingrese cantidad: ");
+            var StringACantidad = (Console.ReadLine());
+            int cantidad;
+            while (!int.TryParse(StringACantidad, out cantidad)) //Comprueba que sea solo numeros
             {
-                Console.WriteLine("Debe ingresar un numero.");
-                Create(lista);
+                Console.WriteLine("Se aceptan solo numeros.");
+                Console.WriteLine("Ingrese la cantidad nuevamente: ");
+                StringACantidad = Console.ReadLine();
             }
+
+            Product nuevo = new Product(id, nombre, precio, cantidad); //Instanciamos el nuevo producto 
+            lista.Add(nuevo); //Lo agregamos a la lista
+
+            Console.WriteLine("\nSe guardo correctamente.");
+
+
             return lista; //Devuelve la lista con el producto agregado
         }
 
@@ -288,6 +300,7 @@ namespace TP_EDD
                             producto.Price = nuevo_precio;
                         }
                     }
+                    Console.WriteLine("\nSe guardaron los cambios.");
                 }
 
                 if (categoria == 2) //Cantidad
@@ -302,8 +315,14 @@ namespace TP_EDD
                             producto.Quantity = nueva_cantidad;
                         }
                     }
+                    Console.WriteLine("\nSe guardaron los cambios.");
                 }
-                Console.WriteLine("\nSe guardaron los cambios.");
+                
+
+
+
+
+                
                 
             }
 
@@ -321,33 +340,53 @@ namespace TP_EDD
         {
 
             Console.WriteLine("Ingrese el id del producto a eliminar: "); //Ingresa id del producto a eliminar
-            
-;           int id_eliminar = 0;
-            id_eliminar = Convert.ToInt32(Console.ReadLine());
-            
-            while ((lista.Exists(producto => producto.Id == id_eliminar)) == false)
+
+            var string_id = Console.ReadLine();
+            int id;
+            while (!int.TryParse(string_id, out id))
             {
-                Console.WriteLine("\nERROR. El producto con el id {0} no existe.", id_eliminar);
+                Console.WriteLine("Se aceptan solo numeros.");
+                Console.WriteLine("Ingrese un id correcto.");
+                string_id = Console.ReadLine();
+            }
+
+            while ((lista.Exists(producto => producto.Id == id)) == false)  //Valida que el producto a eliminar exista
+            {
+                Console.WriteLine("\nERROR. El producto con el id {0} no existe.", id);
                 Console.WriteLine("Ingrese el id del producto a eliminar: ");
-                id_eliminar = Convert.ToInt32(Console.ReadLine());
+                string_id = Console.ReadLine();
+                
+                while (!int.TryParse(string_id, out id))
+                {
+                    Console.WriteLine("Se aceptan solo numeros.");
+                    Console.WriteLine("Ingrese un id correcto.");
+                    string_id = Console.ReadLine();
+                }
             }           
         
 
-            foreach (Product producto in lista.ToList())//Recorre la lista y cuando coincide el id del producto a eliminar, te tira los datos
+            foreach (Product producto in lista.ToList())//Recorre la lista y cuando coincide el id del producto a eliminar, te da el nombre y te pide que confirmes
             {
-                if (producto.Id == id_eliminar)
+                if (producto.Id == id)
                 {
-                    Console.WriteLine("\nUsted esta por eliminar {0}. Desea continuar? si/no", producto.Name);
+                    Console.WriteLine("\nUsted esta por eliminar el producto {0}. Desea continuar? si/no", producto.Name.ToUpper());
                 }
             }
+           
+            
+            string continuar = Console.ReadLine().ToLower(); //valida que tome el si/no en minusculas o mayusculas
 
-            string continuar = Console.ReadLine().ToLower();
-
-            if (continuar == "si")
+            while (continuar != "si" && continuar != "no")
+            {
+                Console.WriteLine("Debe ingresar si o no: ");
+                continuar = Console.ReadLine().ToLower(); //valida que tome el si/no en minusculas o mayusculas
+            }
+            
+            if (continuar == "si") //si ingresa si se elimina
             {
                 foreach (Product producto in lista.ToList())//Recorre la lista y cuando coincide el id del producto a eliminar, se elimina
                 {
-                    if (producto.Id == id_eliminar)
+                    if (producto.Id == id)
                     {
                         lista.Remove(producto);
                     }
@@ -356,42 +395,51 @@ namespace TP_EDD
 
             }
 
-            if(continuar == "no")
+            if(continuar == "no") 
             {
                 return lista;
             }
+
 
             
             return lista;
         }
 
-        public static void Imprimir(List<Product> lista)
+        public static void Imprimir(List<Product> lista) //Funcion que permite guardar el stock en un archivo para luego imprimirlo
         {
             try
             {
-                string fileName = "Impresion.txt";
-                StreamWriter writer = File.CreateText(fileName);
+                Console.WriteLine("Ingrese el nombre del archivo: "); //Te pide el nombre del archivo
+                
+                string fileName = Console.ReadLine()+".txt";  //Agrega extension
 
-                DateTime today = DateTime.Today;
-                writer.WriteLine("Stock de COFFESHOP al dia {0}.", today);
+                StreamWriter writer = File.CreateText(fileName); 
+
+                DateTime today = DateTime.Now;  //Usamos datetime para agregar la fecha al archivo
+                DateTime dateonly = today.Date;
+
+                writer.WriteLine("Stock de COFFESHOP al dia {0}.", today.ToString("MM/dd/yyyy HH:mm")); //Titulo del archivo
 
 
 
-                foreach (Product producto in lista.ToList())
+                foreach (Product producto in lista.ToList())  //Print de todos los productos
                 {
 
                     writer.WriteLine("\nId : {0}, Nombre : {1}, Precio : {2}, Cantidad : {3}", producto.Id, producto.Name, producto.Price, producto.Quantity);
 
                 }
 
-                writer.Close();
+                writer.Close(); //Cierro archivo
 
-                Console.WriteLine("El archivo esta listo para imprimir en la ruta Desktop/IFTS/REPO_EDDTP/EDDatosTP/bin/Debug.");
+                FileInfo fi = new FileInfo(fileName); //Uso file info para acceder a informacion del archivo y luego poder consultar el directorio
+                DirectoryInfo di = fi.Directory; //Guardo el directorio en una variable para indicarselo al usuario
+
+                Console.WriteLine("\nEl archivo {0} esta listo para imprimir en la ruta {1}.", fileName.ToUpper(),di);
             }
 
-            catch
+            catch (IOException) //Atrapa el error al manipular el archivo si es que hay
             {
-                Console.WriteLine("Error con el archivo.");
+                Console.WriteLine("\nError con el archivo."); 
             }
 
         }

@@ -12,3 +12,10 @@ C:\Users\Caro\Desktop\IFTS\REPO_EDDTP\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.csprojAs
 C:\Users\Caro\Desktop\IFTS\REPO_EDDTP\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.csproj.CoreCompileInputs.cache
 C:\Users\Caro\Desktop\IFTS\REPO_EDDTP\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.exe
 C:\Users\Caro\Desktop\IFTS\REPO_EDDTP\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.pdb
+C:\Users\Caro\Desktop\TPEDDgit\EDDatosTP\TP_EDD\bin\Debug\TP_EDD.exe.config
+C:\Users\Caro\Desktop\TPEDDgit\EDDatosTP\TP_EDD\bin\Debug\TP_EDD.exe
+C:\Users\Caro\Desktop\TPEDDgit\EDDatosTP\TP_EDD\bin\Debug\TP_EDD.pdb
+C:\Users\Caro\Desktop\TPEDDgit\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.csprojAssemblyReference.cache
+C:\Users\Caro\Desktop\TPEDDgit\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.csproj.CoreCompileInputs.cache
+C:\Users\Caro\Desktop\TPEDDgit\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.exe
+C:\Users\Caro\Desktop\TPEDDgit\EDDatosTP\TP_EDD\obj\Debug\TP_EDD.pdb
